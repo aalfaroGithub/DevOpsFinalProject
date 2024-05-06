@@ -1,0 +1,40 @@
+version: '3.0'
+
+services:
+  todo:
+    container_name: todo
+    build: .
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYMYSQL_HOST=mysqlDB
+
+  db:
+    image: mysql:8.0
+    container_name: mysqlDB
+    restart: always
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+
+  phpmyadmin:
+    image: phpmyadmin:5.2.0-apache
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+
+volumes:
+  mysql:
+  pmyadmin:
