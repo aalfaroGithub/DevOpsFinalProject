@@ -4,20 +4,22 @@ services:
   todo:
     container_name: todo
     build: .
+    hostname: todo
     restart: always
     ports:
       - "3000:3000"
     depends_on:
       - db
     environment:
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_DB=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYMYSQL_HOST=mysqlDB
+      - MYSQL_HOST=${MYSQL_HOST}
 
   db:
     image: mysql:8.0
     container_name: mysqlDB
+    hostname: mysqlDB
     restart: always
     volumes:
       - mysql:/var/lib/mysql
@@ -28,6 +30,7 @@ services:
   phpmyadmin:
     image: phpmyadmin:5.2.0-apache
     container_name: phpmyadmin
+    hostname: phpmyadmin
     restart: always
     ports:
       - "8080:80"
