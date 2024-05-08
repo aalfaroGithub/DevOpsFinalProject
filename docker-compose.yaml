@@ -38,6 +38,20 @@ services:
       PMA_HOST: db
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
 
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    hostname: nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      # - ./nginx/certs:/etc/nginx/certs
+    depends_on:
+      - todo
+
 volumes:
   mysql:
   pmyadmin:
