@@ -1,0 +1,16 @@
+pipeline {
+    agent { label 'slave1' }
+
+    stages {
+        stage {'Apply Service'} {
+            steps {
+                sh "kubectl apply -f kubernetes/service.yaml"
+            }
+        }
+        stage {'Apply Deployment'} {
+            steps {
+                sh "kubectl apply -f kubernetes/deploy.yaml"
+            }
+        }
+    }
+}

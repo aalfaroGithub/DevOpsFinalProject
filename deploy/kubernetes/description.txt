@@ -1,0 +1,13 @@
+Un deployment llamado myapp
+con una replica y un podo con el mismo nombre
+y con contenido un container con el app
+Y se sirve el contenedor en un puerto 80 a con el nombre de http-port
+The tag parameter is send with jenkins
+
+
+service
+Un servicio con el nombre de myapp, que apunta al deployment y al port con el label de myapp, a la hora de levantar nuestro deploy, levanta el servicio.
+de tipo nodeport
+apunta al puerto 80 y sirve por el puerto 80
+
+cambiar la direccion de la imagen por la de hub.docker
