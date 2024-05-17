@@ -8,6 +8,18 @@ The tag parameter is send with jenkins
 service
 Un servicio con el nombre de myapp, que apunta al deployment y al port con el label de myapp, a la hora de levantar nuestro deploy, levanta el servicio.
 de tipo nodeport
-apunta al puerto 80 y sirve por el puerto 80
+apunta al puerto 3000 y sirve por el puerto 3000
 
 cambiar la direccion de la imagen por la de hub.docker
+
+To create the ingress of minikube and use the nginx ingress run
+kubectl addons enable ingress
+
+Creates the pod and the service for mysql
+kubectl apply -f mysql.yaml
+Creates the configuraction file to use it inside the myapp deployment
+kubectl apply -f mysql-config.yaml
+kubectl apply -f deploy.yaml
+
+kubectl apply -f nginx.yaml
+kubectl create -f ingress.yaml

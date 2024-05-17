@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-config
+data:
+  mysql_host: "mysql-service"
+  mysql_password: "123456"
+  mysql_db: "todos"
+  mysql_user: "root"

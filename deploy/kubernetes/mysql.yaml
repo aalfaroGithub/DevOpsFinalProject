@@ -14,6 +14,9 @@ spec:
       labels:
         app: mysql
     spec:
+      volumes:
+      - name: mysql
+        emptyDir: {}
       containers:
       - name: mysql
         image: mysql:8.0
@@ -24,4 +27,19 @@ spec:
           value: "123456"
         - name: MYSQL_DATABASE
           value: "todos"
-    
+        volumeMounts:
+        - name: mysql
+          mountPath: /var/lib/mysql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+spec:
+  selector:
+    app: mysql
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+  type: NodePort
