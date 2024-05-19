@@ -40,5 +40,21 @@ pipeline {
                 }
             }
         }
+        stage ('Apply MySqlDeployment') {
+            steps {
+                sh "kubectl apply -f deploy/kubernetes/mysql-config.yaml"
+                sh "kubectl apply -f deploy/kubernetes/mysql.yaml"
+            }
+        }
+        stage ('Apply Deployment') {
+            steps {
+                sh "kubectl apply -f deploy/kubernetes/deploy.yaml"
+            }
+        }
+        stage ('Apply Ingress') {
+            steps {
+                sh "kubectl apply -f deploy/kubernetes/ingress.yaml"
+            }
+        }
     }
 }
