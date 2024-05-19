@@ -11,7 +11,7 @@ pipeline {
         // Checkin the git repository
         stage ('Checkout source code') {
             steps {
-                git 'git@github.com:aalfaroGithub/DevOpsFinalProject.git'
+                git 'https://github.com/aalfaroGithub/DevOpsFinalProject.git'
             }
         }
         // Clone the repository if it's not already cloned
