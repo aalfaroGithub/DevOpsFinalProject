@@ -9,11 +9,11 @@ pipeline {
 
     stages {
         // Checkin the git repository
-        stage ('Checkout source code') {
-            steps {
-                git 'https://github.com/aalfaroGithub/DevOpsFinalProject.git'
-            }
-        }
+        // stage ('Checkout source code') {
+        //     steps {
+        //         git 'https://github.com/aalfaroGithub/DevOpsFinalProject.git'
+        //     }
+        // }
         // Clone the repository if it's not already cloned
         // Checkout docker info to see if it's running
         stage ('Docker Info') {
