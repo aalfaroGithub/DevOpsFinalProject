@@ -40,25 +40,31 @@ pipeline {
                 }
             }
         }*/
+        stage ('Apply SqlConfigMap ') {
+            steps {
+                script {
+                    kubernetesDeploy(configs: 'deploy/kubernetes/mysql-config.yaml', kubeconfigId: 'mykubecred', namespace: 'default')
+                }
+            }
+        }
         stage ('Apply MySqlDeployment') {
             steps {
                 script {
-                    kubernetesDeploy(configs: 'deploy/kubernetes/mysql-config.yaml', kubeconfigId: 'mykubecred', enableConfigSubstitution: true, enableSubstitution: true, showLogs: true, verbose: true, wait: true, namespace: 'default')
-                    kubernetesDeploy(configs: 'deploy/kubernetes/mysql.yaml', kubeconfigId: 'mykubecred', enableConfigSubstitution: true, enableSubstitution: true, showLogs: true, verbose: true, wait: true, namespace: 'default')
+                    kubernetesDeploy(configs: 'deploy/kubernetes/mysql.yaml', kubeconfigId: 'mykubecred', namespace: 'default')
                 }
             }
         }
         stage ('Apply Deployment') {
             steps {
                 script {
-                    kubernetesDeploy(configs: 'deploy/kubernetes/deploy.yaml', kubeconfigId: 'mykubecred', enableConfigSubstitution: true, enableSubstitution: true, showLogs: true, verbose: true, wait: true, namespace: 'default')
+                    kubernetesDeploy(configs: 'deploy/kubernetes/deploy.yaml', kubeconfigId: 'mykubecred', namespace: 'default')
                 }
             }
         }
         stage ('Apply Ingress') {
             steps {
                 script {
-                    kubernetesDeploy(configs: 'deploy/kubernetes/ingress.yaml', kubeconfigId: 'mykubecred', enableConfigSubstitution: true, enableSubstitution: true, showLogs: true, verbose: true, wait: true, namespace: 'default')
+                    kubernetesDeploy(configs: 'deploy/kubernetes/ingress.yaml', kubeconfigId: 'mykubecred', namespace: 'default')
                 }
             }
         }
