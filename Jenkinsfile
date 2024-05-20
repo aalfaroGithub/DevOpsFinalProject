@@ -40,21 +40,28 @@ pipeline {
                 }
             }
         }
-        stage ('Apply MySqlDeployment') {
+        stage ('Apply kubeconfig') {
             steps {
-                sh "kubectl apply -f deploy/kubernetes/mysql-config.yaml"
-                sh "kubectl apply -f deploy/kubernetes/mysql.yaml"
+                script {
+                    kubernetesDeploy(configs: 'deploy/kubernetes/mysql-config.yaml', kubeconfigId: 'mykubecred', enableConfigSubstitution: true, enableSubstitution: true, showLogs: true, verbose: true, wait: true, namespace: 'default')
+                }
             }
         }
-        stage ('Apply Deployment') {
-            steps {
-                sh "kubectl apply -f deploy/kubernetes/deploy.yaml"
-            }
-        }
-        stage ('Apply Ingress') {
-            steps {
-                sh "kubectl apply -f deploy/kubernetes/ingress.yaml"
-            }
-        }
+        // stage ('Apply MySqlDeployment') {
+        //     steps {
+        //         sh "kubectl apply -f deploy/kubernetes/mysql-config.yaml"
+        //         sh "kubectl apply -f deploy/kubernetes/mysql.yaml"
+        //     }
+        // }
+        // stage ('Apply Deployment') {
+        //     steps {
+        //         sh "kubectl apply -f deploy/kubernetes/deploy.yaml"
+        //     }
+        // }
+        // stage ('Apply Ingress') {
+        //     steps {
+        //         sh "kubectl apply -f deploy/kubernetes/ingress.yaml"
+        //     }
+        // }
     }
 }
