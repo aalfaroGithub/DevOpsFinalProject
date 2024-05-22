@@ -43,7 +43,7 @@ pipeline {
         stage ('Apply SqlConfigMap ') {
             steps {
                 script {
-                    withKubeConfig([credentialsId: 'mykubecred']) {
+                    withKubeConfig([credentialsId: 'mykubeconfig']) {
                         sh 'kubectl apply -f deploy/kubernetes/mysql-config.yaml'
                     }
                     // kubernetesDeploy(configs: 'deploy/kubernetes/mysql-config.yaml', kubeconfigId: 'mykubecred', namespace: 'default')
