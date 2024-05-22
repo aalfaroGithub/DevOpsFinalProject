@@ -43,11 +43,14 @@ pipeline {
         stage ('Apply SqlConfigMap ') {
             steps {
                 script {
-                    kubernetesDeploy(configs: 'deploy/kubernetes/mysql-config.yaml', kubeconfigId: 'mykubecred', namespace: 'default')
+                    withKubeConfig([credentialsId: 'mykubecred']) {
+                        sh 'kubectl apply -f deploy/kubernetes/mysql-config.yaml'
+                    }
+                    // kubernetesDeploy(configs: 'deploy/kubernetes/mysql-config.yaml', kubeconfigId: 'mykubecred', namespace: 'default')
                 }
             }
         }
-        stage ('Apply MySqlDeployment') {
+        /*stage ('Apply MySqlDeployment') {
             steps {
                 script {
                     kubernetesDeploy(configs: 'deploy/kubernetes/mysql.yaml', kubeconfigId: 'mykubecred', namespace: 'default')
@@ -67,6 +70,6 @@ pipeline {
                     kubernetesDeploy(configs: 'deploy/kubernetes/ingress.yaml', kubeconfigId: 'mykubecred', namespace: 'default')
                 }
             }
-        }
+        }*/
     }
 }
