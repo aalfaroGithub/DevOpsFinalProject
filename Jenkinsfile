@@ -50,26 +50,35 @@ pipeline {
                 }
             }
         }
-        /*stage ('Apply MySqlDeployment') {
+        stage ('Apply MySqlDeployment') {
             steps {
                 script {
-                    kubernetesDeploy(configs: 'deploy/kubernetes/mysql.yaml', kubeconfigId: 'mykubecred', namespace: 'default')
+                    withKubeConfig([credentialsId: 'mykubeconfig']) {
+                        sh 'kubectl apply -f deploy/kubernetes/mysql.yaml'
+                    }
+                    // kubernetesDeploy(configs: 'deploy/kubernetes/mysql.yaml', kubeconfigId: 'mykubecred', namespace: 'default')
                 }
             }
         }
         stage ('Apply Deployment') {
             steps {
                 script {
-                    kubernetesDeploy(configs: 'deploy/kubernetes/deploy.yaml', kubeconfigId: 'mykubecred', namespace: 'default')
+                    withKubeConfig([credentialsId: 'mykubeconfig']) {
+                        sh 'kubectl apply -f deploy/kubernetes/deploy.yaml'
+                    }
+                    // kubernetesDeploy(configs: 'deploy/kubernetes/deploy.yaml', kubeconfigId: 'mykubecred', namespace: 'default')
                 }
             }
         }
         stage ('Apply Ingress') {
             steps {
                 script {
-                    kubernetesDeploy(configs: 'deploy/kubernetes/ingress.yaml', kubeconfigId: 'mykubecred', namespace: 'default')
+                    withKubeConfig([credentialsId: 'mykubeconfig']) {
+                        sh 'kubectl apply -f deploy/kubernetes/ingress.yaml'
+                    }
+                    // kubernetesDeploy(configs: 'deploy/kubernetes/ingress.yaml', kubeconfigId: 'mykubecred', namespace: 'default')
                 }
             }
-        }*/
+        }
     }
 }
