@@ -14,7 +14,6 @@ pipeline {
         //         git 'https://github.com/aalfaroGithub/DevOpsFinalProject.git'
         //     }
         // }
-        // Clone the repository if it's not already cloned
         // Checkout docker info to see if it's running
         /*stage ('Docker Info') {
             steps {
@@ -40,6 +39,22 @@ pipeline {
                 }
             }
         }*/
+        stage ('Sonarqube') {
+            steps {
+                script {
+                    docker.image('sonarsource/sonar-scanner-cli:latest').inside {
+                        sh '''
+                            sonar-scanner \
+                                -Dsonar.host.url=http://localhost:9000
+                        '''
+                    }
+                    // def scannerHome = tool 'SonarQubeScanner';
+                    // withSonarQubeEnv('SonarQube') {
+                    //     sh "${scannerHome}/bin/sonar-scanner"
+                    // }
+                }
+            }
+        }
         stage ('Apply SqlConfigMap ') {
             steps {
                 script {
