@@ -45,13 +45,12 @@ pipeline {
                     docker.image('sonarsource/sonar-scanner-cli:latest').inside {
                         sh '''
                             sonar-scanner \
-                                -Dsonar.host.url=http://172.17.0.2:9000
+                                -Dsonar.host.url=http://172.17.0.2:9000 \
+                                -Dsonar.projectKey=devopsfinalproject-todo \
+                                -Dsonar.sources=src \
+                                -Dsonar.token=squ_7e0170b3fd4ed9234db70199102b5f4c0d1ec6b3
                         '''
                     }
-                    // def scannerHome = tool 'SonarQubeScanner';
-                    // withSonarQubeEnv('SonarQube') {
-                    //     sh "${scannerHome}/bin/sonar-scanner"
-                    // }
                 }
             }
         }
