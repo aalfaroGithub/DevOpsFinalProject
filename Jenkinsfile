@@ -39,7 +39,7 @@ pipeline {
                 }
             }
         }*/
-        stage ('Sonarqube') {
+        /*stage ('Sonarqube') {
             steps {
                 script {
                     docker.image('sonarsource/sonar-scanner-cli:latest').inside {
@@ -53,8 +53,30 @@ pipeline {
                     }
                 }
             }
+        }*/
+        // Stage to run the terraform script to create the Ec2 instance
+        stage ('Run Terraform Init') {
+            steps {
+                dir('./deploy/terraform') {
+                    sh 'terraform init'
+                }
+            }
         }
-        stage ('Apply SqlConfigMap ') {
+        stage ('Run Terraform Plan') {
+            steps {
+                dir('./deploy/terraform') {
+                    sh 'terraform plan'
+                }
+            }
+        }
+        stage ('Run Terraform Apply') {
+            steps {
+                dir('./deploy/terraform') {
+                    sh 'terraform apply -auto-approve'
+                }
+            }
+        }
+        /*stage ('Apply SqlConfigMap ') {
             steps {
                 script {
                     withKubeConfig([credentialsId: 'mykubeconfig']) {
@@ -93,6 +115,6 @@ pipeline {
                     // kubernetesDeploy(configs: 'deploy/kubernetes/ingress.yaml', kubeconfigId: 'mykubecred', namespace: 'default')
                 }
             }
-        }
+        }*/
     }
 }

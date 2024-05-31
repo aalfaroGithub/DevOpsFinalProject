@@ -1,0 +1,14 @@
+---
+- name: Package Update
+  apt:
+    update_cache: yes
+    upgrade: "yes"
+    force_apt_get: yes
+  when: ansible_facts.packages is defined
+
+- name: Openjdk 17
+  apt:
+    name: 
+      - openjdk-17-jre
+      - openjdk-17-jdk
+    state: present
