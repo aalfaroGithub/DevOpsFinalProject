@@ -73,6 +73,18 @@ pipeline {
             steps {
                 dir('./deploy/terraform') {
                     sh 'terraform apply -auto-approve'
+                    script {
+                        env.TF_OUTPUT_IP = sh(script: 'terraform output ec2_instance_ip', returnStdout: true).trim()
+                    }
+                }
+            }
+        }
+        // Running the ansible playbook to install the necessary software using the ip address of the ec2 instance
+        stage ('Run Ansible Playbook') {
+            steps {
+                dir('./deploy/Ansible') {
+                    sh 'chmod 600 ~/Documents/ansible/key_pair.pem'
+                    sh 'ansible-playbook -i \'${TF_OUTPUT_IP},\' --private-key=~/Documents/ansible/key_pair.pem --user=ubuntu ec2.yaml'
                 }
             }
         }

@@ -26,22 +26,6 @@ resource "aws_instance" "public_instance" {
   subnet_id            = var.public_subnet_id
   key_name             = aws_key_pair.key_pair.key_name
   iam_instance_profile = var.instance_profile
-
-  provisioner "remote-exec" {
-    inline =  ["echo 'Waiting for the ssh.'"] 
-
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      # private_key = tls_private_key.rsa_4096.private_key_pem
-      private_key = file(local_file.private_key.filename)
-      host        = self.public_ip
-    }
-  }
-
-  provisioner "local-exec" {
-    command = "chmod 600 ${local_file.private_key.filename} && ansible-playbook -i '${self.public_ip},' --private-key=${local_file.private_key.filename} --user=ubuntu ../Ansible/ec2.yaml"
-  }
   
   tags = {
     Name = "public_instance"
