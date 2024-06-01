@@ -84,7 +84,7 @@ pipeline {
             steps {
                 dir('./deploy/Ansible') {
                     sh 'chmod 600 ~/Documents/ansible/key_pair.pem'
-                    sh "ansible-playbook -i ${TF_OUTPUT_IP}, --private-key=~/Documents/ansible/key_pair.pem --user=ubuntu ec2.yaml"
+                    sh "ansible-playbook -i ${TF_OUTPUT_IP}, --private-key=~/Documents/ansible/key_pair.pem --user=ubuntu ec2.yaml --ssh-common-args='-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'"
                 }
             }
         }
