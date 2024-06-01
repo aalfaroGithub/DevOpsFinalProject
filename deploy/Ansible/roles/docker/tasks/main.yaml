@@ -13,11 +13,15 @@
 
     - name: Adding Docker to the group
       user:
-        name: "{{ ansible_user }}"
+        name: "{{ item }}"
         groups: docker
         append: yes
       loop:
         - ubuntu
+      when: ansible_facts.packages['docker.io'] is defined
+
+    - name: Apply group membership
+      command: newgrp docker
       when: ansible_facts.packages['docker.io'] is defined
 
     - name: Restarting docker
@@ -29,7 +33,5 @@
     - name: Docker sock permissions
       file:
         path: /var/run/docker.sock
-        owner: root
-        group: docker
         mode: '0777'
       when: ansible_facts.packages['docker.io'] is defined

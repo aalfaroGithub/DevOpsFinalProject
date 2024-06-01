@@ -13,7 +13,7 @@ variable "ami" {
 variable "instance_type" {
   description = "The type of instance to launch"
   type        = string
-  default = "t2.micro"
+  default = "t2.large"
 }
 
 variable "availability_zone" {
