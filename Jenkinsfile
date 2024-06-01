@@ -129,4 +129,10 @@ pipeline {
             }
         }*/
     }
+    post {
+        failure {
+            echo 'Cleaning up'
+            sh 'terraform destroy -auto-approve'
+        }
+    }
 }

@@ -1,6 +1,10 @@
 ---
 - name: Install Docker
   block:
+    - name: Updating package cache
+      apt:
+        update_cache: yes
+        
     - name: Installing Docker
       apt:
         name: docker.io
