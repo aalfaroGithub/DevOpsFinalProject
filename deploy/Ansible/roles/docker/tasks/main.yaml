@@ -1,0 +1,31 @@
+---
+- name: Install Docker
+  block:
+    - name: Installing Docker
+      apt:
+        name: docker.io
+        state: present
+      when: ansible_facts.packages['docker.io'] is not defined
+
+    - name: Adding Docker to the group
+      user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: yes
+      loop:
+        - ubuntu
+      when: ansible_facts.packages['docker.io'] is defined
+
+    - name: Restarting docker
+      systemd:
+        name: docker
+        state: restarted
+      when: ansible_facts.packages['docker.io'] is defined
+
+    - name: Docker sock permissions
+      file:
+        path: /var/run/docker.sock
+        owner: root
+        group: docker
+        mode: '0777'
+      when: ansible_facts.packages['docker.io'] is defined

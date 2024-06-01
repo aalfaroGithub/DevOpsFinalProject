@@ -1,0 +1,26 @@
+---
+- name: Install Minikube
+  block:
+    - name: Installing Minikube
+      shell: curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+    - name: Installing Minikube
+      shell: sudo install minikube-linux-amd64 /usr/local/bin/minikube
+    - name: Installing Minikube
+      shell: rm minikube-linux-amd64
+  when: ansible_facts.packages['minikube'] is not defined
+
+- name: Minikube start
+  shell: minikube start
+  when: ansible_facts.packages['minikube'] is defined
+
+- name: Minikube permissions
+  shell: sudo chown -R $USER $HOME/.kube $HOME/.minikube
+  when: ansible_facts.packages['minikube'] is defined
+
+- name: Minikube addons
+  shell: minikube addons enable ingress
+  when: ansible_facts.packages['minikube'] is defined
+
+- name: Minikube ingress-dns
+  shell: minikube addons enable ingress-dns
+  when: ansible_facts.packages['minikube'] is defined
