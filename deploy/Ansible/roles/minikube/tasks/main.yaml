@@ -11,16 +11,16 @@
 
 - name: Minikube start
   shell: minikube start
-  when: ansible_facts.packages['minikube'] is defined
+  when: ansible_os_family == 'Debian'
 
 - name: Minikube permissions
   shell: sudo chown -R $USER $HOME/.kube $HOME/.minikube
-  when: ansible_facts.packages['minikube'] is defined
+  when: ansible_os_family == 'Debian'
 
 - name: Minikube addons
   shell: minikube addons enable ingress
-  when: ansible_facts.packages['minikube'] is defined
+  when: ansible_os_family == 'Debian'
 
 - name: Minikube ingress-dns
   shell: minikube addons enable ingress-dns
-  when: ansible_facts.packages['minikube'] is defined
+  when: ansible_os_family == 'Debian'
