@@ -1,4 +1,13 @@
 ---
+- name: Install kubectl
+  block:
+    - name: Downloading kubectl
+      get_url:
+        url: https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+        dest: /usr/local/bin/kubectl
+        mode: '0755'
+      when: ansible_facts.packages['kubectl'] is not defined
+      
 - name: Install Minikube
   block:
     - name: Installing Minikube
