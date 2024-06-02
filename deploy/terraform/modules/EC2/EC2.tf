@@ -30,4 +30,21 @@ resource "aws_instance" "public_instance" {
   tags = {
     Name = "public_instance"
   }
+
+  // Adding a volume to the instance
+  // Volume size is 30 GB and volume type is gp2
+  root_block_device {
+    volume_size = 30
+    volume_type = "gp2"
+  }
+}
+
+// Resource to create the volume
+resource "aws_ebs_volume" "ebs_volume" {
+  availability_zone = var.availability_zone
+  size              = 30
+  type              = "gp2"
+  tags = {
+    Name = "ebs_volume"
+  }
 }
