@@ -20,8 +20,8 @@
         - ubuntu
       when: ansible_os_family == 'Debian'
 
-    - name: Apply group membership
-      shell: newgrp docker
+    - name: Applying group membership
+      shell: nohup newgrp docker &
       when: ansible_os_family == 'Debian'
 
 
