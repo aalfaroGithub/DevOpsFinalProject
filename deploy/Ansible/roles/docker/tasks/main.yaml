@@ -21,7 +21,7 @@
       when: ansible_os_family == 'Debian'
 
     - name: Apply group membership
-      command: newgrp docker
+      shell: newgrp docker
       when: ansible_os_family == 'Debian'
 
 
