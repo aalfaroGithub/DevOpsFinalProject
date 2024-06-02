@@ -15,7 +15,7 @@ pipeline {
         //     }
         // }
         // Checkout docker info to see if it's running
-        /*stage ('Docker Info') {
+        stage ('Docker Info') {
             steps {
                 sh 'docker info'
             }
@@ -38,8 +38,8 @@ pipeline {
                     }
                 }
             }
-        }*/
-        /*stage ('Sonarqube') {
+        }
+        stage ('Sonarqube') {
             steps {
                 script {
                     docker.image('sonarsource/sonar-scanner-cli:latest').inside {
@@ -53,9 +53,11 @@ pipeline {
                     }
                 }
             }
-        }*/
-        // Stage to run the terraform script to create the Ec2 instance
-        stage ('Run Terraform Init') {
+        }
+
+        // ******* Terraform Section *******//
+        //Stage to run the terraform script to create the Ec2 instance
+        /*stage ('Run Terraform Init') {
             steps {
                 dir('./deploy/terraform') {
                     sh 'terraform init'
@@ -78,17 +80,21 @@ pipeline {
                     }
                 }
             }
-        }
+        }*/
         // Running the ansible playbook to install the necessary software using the ip address of the ec2 instance
-        stage ('Run Ansible Playbook') {
+        /*stage ('Run Ansible Playbook') {
             steps {
                 dir('./deploy/Ansible') {
                     sh 'chmod 600 ~/Documents/ansible/key_pair.pem'
                     sh "ansible-playbook -i ${TF_OUTPUT_IP}, --private-key=~/Documents/ansible/key_pair.pem --user=ubuntu ec2.yaml --ssh-common-args='-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'"
                 }
             }
-        }
-        /*stage ('Apply SqlConfigMap ') {
+        }*/
+
+        // ****** End of Terraform Section ******//
+
+        
+        stage ('Apply SqlConfigMap ') {
             steps {
                 script {
                     withKubeConfig([credentialsId: 'mykubeconfig']) {
@@ -127,14 +133,14 @@ pipeline {
                     // kubernetesDeploy(configs: 'deploy/kubernetes/ingress.yaml', kubeconfigId: 'mykubecred', namespace: 'default')
                 }
             }
-        }*/
-    }
-    post {
-        failure {
-            dir('./deploy/terraform') {
-                echo 'Cleaning up'
-                sh 'terraform destroy -auto-approve'
-            }
         }
     }
+    // post {
+    //     failure {
+    //         dir('./deploy/terraform') {
+    //             echo 'Cleaning up'
+    //             sh 'terraform destroy -auto-approve'
+    //         }
+    //     }
+    // }
 }
