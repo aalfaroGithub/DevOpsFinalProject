@@ -131,8 +131,10 @@ pipeline {
     }
     post {
         failure {
-            echo 'Cleaning up'
-            sh 'terraform destroy -auto-approve'
+            dir('./deploy/terraform') {
+                echo 'Cleaning up'
+                sh 'terraform destroy -auto-approve'
+            }
         }
     }
 }
