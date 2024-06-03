@@ -5,6 +5,7 @@ pipeline {
         dockerimagename = "andresdckr/devopsfinalproject-todo"
         dockerImage = ''
         registryCredential = 'dockerhub'
+        SONAR_TOKEN = credentials('sonarqube-secret')
     }
 
     stages {
@@ -15,7 +16,7 @@ pipeline {
         //     }
         // }
         // Checkout docker info to see if it's running
-        stage ('Docker Info') {
+        /*stage ('Docker Info') {
             steps {
                 sh 'docker info'
             }
@@ -48,16 +49,16 @@ pipeline {
                                 -Dsonar.host.url=http://172.17.0.2:9000 \
                                 -Dsonar.projectKey=devopsfinalproject-todo \
                                 -Dsonar.sources=src \
-                                -Dsonar.token=squ_7e0170b3fd4ed9234db70199102b5f4c0d1ec6b3
+                                -Dsonar.token=$SONAR_TOKEN
                         '''
                     }
                 }
             }
-        }
+        }*/
 
         // ******* Terraform Section *******//
         //Stage to run the terraform script to create the Ec2 instance
-        /*stage ('Run Terraform Init') {
+        stage ('Run Terraform Init') {
             steps {
                 dir('./deploy/terraform') {
                     sh 'terraform init'
@@ -80,21 +81,21 @@ pipeline {
                     }
                 }
             }
-        }*/
+        }
         // Running the ansible playbook to install the necessary software using the ip address of the ec2 instance
-        /*stage ('Run Ansible Playbook') {
+        stage ('Run Ansible Playbook') {
             steps {
                 dir('./deploy/Ansible') {
                     sh 'chmod 600 ~/Documents/ansible/key_pair.pem'
                     sh "ansible-playbook -i ${TF_OUTPUT_IP}, --private-key=~/Documents/ansible/key_pair.pem --user=ubuntu ec2.yaml --ssh-common-args='-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'"
                 }
             }
-        }*/
+        }
 
         // ****** End of Terraform Section ******//
 
         
-        stage ('Apply SqlConfigMap ') {
+        /*stage ('Apply SqlConfigMap ') {
             steps {
                 script {
                     withKubeConfig([credentialsId: 'mykubeconfig']) {
@@ -133,14 +134,14 @@ pipeline {
                     // kubernetesDeploy(configs: 'deploy/kubernetes/ingress.yaml', kubeconfigId: 'mykubecred', namespace: 'default')
                 }
             }
+        }*/
+    }
+    post {
+        failure {
+            dir('./deploy/terraform') {
+                echo 'Cleaning up'
+                sh 'terraform destroy -auto-approve'
+            }
         }
     }
-    // post {
-    //     failure {
-    //         dir('./deploy/terraform') {
-    //             echo 'Cleaning up'
-    //             sh 'terraform destroy -auto-approve'
-    //         }
-    //     }
-    // }
 }
