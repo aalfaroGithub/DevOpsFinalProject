@@ -1,5 +1,7 @@
 ### Proyecto Final: Todo-List App con Enfoque DevOps
 
+Nota: El proyecto utilizado fue brindado por los tutores del bootcamp.
+
 #### Descripción del Proyecto
 El proyecto consiste en una aplicación tipo "Todo-List" utilizando tecnologías modernas de desarrollo web y operaciones de infraestructura, con un enfoque específico en DevOps. La aplicación estará compuesta por un backend Node.js con Express y una base de datos MySQL. Utilizaremos herramientas como Terraform para la infraestructura como código (IaC), CI/CD para automatización del flujo de trabajo, contenedores Docker para la portabilidad y Kubernetes para la orquestación de contenedores. Además, se incorporarán prácticas de observabilidad para garantizar la monitorización y la resolución proactiva de problemas.
 
